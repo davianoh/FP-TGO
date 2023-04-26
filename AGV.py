@@ -8,9 +8,13 @@ eks_g = 9.8
 eks_Vmax = 2
 # ------------
 
-AVG_Load = {'A':5, 'B':5, 'C':2, 'D':2, 'E':4}
+# GLOBAL PARAMETERS ---------------------
+G = {'A': {'B': 1, 'C': 4}, 'B': {'C': 2}, 'C': {'D': 3}}
+S = set()
+AVG_Load = {'A':5, 'B':5, 'C':2, 'D':2}
 
 def Load(v):
+    global AVG_Load
     return AVG_Load[v]
 
 def Weight_equation(M, a, g, theta, d, v, f_rl):
@@ -41,22 +45,30 @@ def Calculate_weight(M, a, g, theta, v, f_rl, G):
     return weight
 
 
-def Dijkstra_shortestPath(G, v):
-    S = {v}
+def Dijkstra_shortestPath(G, v, M):
+    global S
+    if v not in S:
+        S.add(v)
+
     M = M - Load(v)
     weight = Calculate_weight(M, eks_a, eks_g, 1, eks_Vmax, eks_Frl, G)
     distance = {v: 0}
     for i in G:
         distance[i] = weight[v][i]
 
-    for i in G:
-        G2 = set(G.keys()) - S
-        u = min(G2, key=lambda k: distance.get(k, float('inf')))
+    # for i in G:
+        
 
+    # Among vertices not belonging to S, vertex whose distance [] is minimum
+    G2 = set(G.keys()) - S
+    u = min(G2, key=lambda k: distance.get(k, float('inf')))
+
+    if u not in S:
         S.add(u)
-        for j in G:
-            if j not in S:
-                distance[j] = min(distance[j], distance[u] + weight[u][j])
+
+    for j in G:
+        if j not in S:
+            distance[j] = min(distance[j], distance[u] + weight[u][j])
                 
     return u
 
@@ -71,20 +83,26 @@ def Main(G):
     V = set(G.keys())
     u = 'A'
     E = 0
+
+    path = []
     
     # Loop until all vertices have been visited
     while V:
         # Find the shortest path from u to all other vertices using Dijkstra's algorithm
-        u = Dijkstra_shortestPath(G, 'A')
+        u = Dijkstra_shortestPath(G, u, M)
         
-        E = E + G[u]
-        
+        #Sum of the weight starting vertex and arrival vertex
+        #E = E + G[u]
+
+        path.append(u)
+        print('vertex=' + u)
         # Remove the visited vertices from the set M
         V.remove(u)
         
-    return E
+    return path
 
-
+result = Main(G)
+print(result)
 
 
 # Codes Samples -----------------
