@@ -18,3 +18,6 @@ print(u)
 # min_key = min(graph, key=lambda k: graph[k])
 
 # print("Key with minimum value:", min_key)
+
+#G = {'A': {'B': [5, 1], 'C': [3, 1]}, 'B': {'A': [5, 1], 'C': [1, 1], 'D': [4, 1]}, 'C': {'A': [3, 1], 'B': [1, 1], 'D': [2, 1]}, 'D': {'B': [4, 1], 'C': [2, 1]}}
+

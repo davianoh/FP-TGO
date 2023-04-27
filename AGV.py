@@ -9,9 +9,11 @@ eks_Vmax = 2
 # ------------
 
 # GLOBAL PARAMETERS ---------------------
-G = {'A': {'B': 5, 'C': 3}, 'B': {'A': 5, 'C': 1, 'D': 4}, 'C': {'A': 3, 'B': 1, 'D': 2}, 'D': {'B': 4, 'C': 2}}
+G = {'A': {'B': [6, 1], 'D': [4, 1], 'E': [3, 1]}, 'B': {'A': [6, 1], 'D': [5, 1], 'E': [4, 1], 'F': [4, 1], 'C': [5, 1]}, 'C': {'B': [5, 1], 'E': [5, 1], 'F': [5, 1]}, 
+     'D': {'A': [4, 1], 'B': [5, 1], 'E': [3, 1], 'H': [3, 1], 'G': [3, 1]}, 'E': {'B': [4, 1], 'A': [3, 1], 'D': [3, 1], 'G': [2, 1], 'H': [5, 1], 'I': [6, 1], 'F': [4, 1], 'C': [5, 1]}, 'F': {'C': [5, 1], 'B': [4, 1], 'E': [4, 1], 'H': [4, 1], 'I': [1, 1]},
+     'G': {'D': [3, 1], 'E': [2, 1], 'H': [5, 1]}, 'H': {'G': [5, 1], 'D': [3, 1], 'E': [5, 1], 'F': [4, 1], 'I': [2, 1]}, 'I': {'H': [2, 1], 'E': [6, 1], 'F': [1, 1]}}
 S = set()
-AVG_Load = {'A':5, 'B':5, 'C':5, 'D':5}
+AVG_Load = {'A':5, 'B':5, 'C':5, 'D':5, 'E':5, 'F':5, 'G':5, 'H':5, 'I':5}
 # ------------
 
 def Load(v):
@@ -22,7 +24,7 @@ def Weight_equation(M, a, g, theta, d, v, f_rl):
     weight = (M*a + f_rl*M*g + M*g*math.sin(theta)) * d
     return weight
 
-def Calculate_weight(M, a, g, theta, v, f_rl, G):
+def Calculate_weight(M, a, g, v, f_rl, G):
     # Initialize the weight matrix to infinity for all vertex pairs
     weight = {}
     for i in G:
@@ -40,7 +42,7 @@ def Calculate_weight(M, a, g, theta, v, f_rl, G):
     for i in G:
         for j in G:
             if j in G[i]:
-                weight[i][j] = Weight_equation(M, a, g, theta, G[i][j], v, f_rl)
+                weight[i][j] = Weight_equation(M, a, g, G[i][j][1], G[i][j][0], v, f_rl)
                 #weight[j][i] = Weight_equation(M, a, g, -theta, G[i][j], v, f_rl)
     
     return weight
@@ -52,7 +54,7 @@ def Dijkstra_shortestPath(G, v, M):
         S.add(v)
 
     M = M - Load(v)
-    weight = Calculate_weight(M, eks_a, eks_g, 1, eks_Vmax, eks_Frl, G)
+    weight = Calculate_weight(M, eks_a, eks_g, eks_Vmax, eks_Frl, G)
     distance = {v: 0}
     for i in G:
         distance[i] = weight[v][i]
