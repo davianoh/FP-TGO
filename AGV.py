@@ -9,9 +9,10 @@ eks_Vmax = 2
 # ------------
 
 # GLOBAL PARAMETERS ---------------------
-G = {'A': {'B': 1, 'C': 4}, 'B': {'C': 2}, 'C': {'D': 3}}
+G = {'A': {'B': 5, 'C': 3}, 'B': {'A': 5, 'C': 1, 'D': 4}, 'C': {'A': 3, 'B': 1, 'D': 2}, 'D': {'B': 4, 'C': 2}}
 S = set()
-AVG_Load = {'A':5, 'B':5, 'C':2, 'D':2}
+AVG_Load = {'A':5, 'B':5, 'C':5, 'D':5}
+# ------------
 
 def Load(v):
     global AVG_Load
@@ -40,7 +41,7 @@ def Calculate_weight(M, a, g, theta, v, f_rl, G):
         for j in G:
             if j in G[i]:
                 weight[i][j] = Weight_equation(M, a, g, theta, G[i][j], v, f_rl)
-                weight[j][i] = Weight_equation(M, a, g, -theta, G[i][j], v, f_rl)
+                #weight[j][i] = Weight_equation(M, a, g, -theta, G[i][j], v, f_rl)
     
     return weight
 
@@ -85,6 +86,10 @@ def Main(G):
     E = 0
 
     path = []
+
+    path.append(u)
+    print('vertex=' + u)
+    V.remove(u)
     
     # Loop until all vertices have been visited
     while V:
@@ -104,27 +109,3 @@ def Main(G):
 result = Main(G)
 print(result)
 
-
-# Codes Samples -----------------
-# def Dijkstra_shortestPath(G, v):
-#     S = {v}
-#     M = set(G.keys()) - S
-#     weight = Calculate_weight(M, G, theta, d, G.keys())
-#     distance = {v: 0}
-    
-#     while M:
-#         # Find the vertex with the minimum distance that has not yet been visited
-#         u = min(M, key=lambda vertex: distance.get(vertex, float('inf')))
-        
-#         # Mark the vertex as visited and remove it from the unvisited set
-#         M.remove(u)
-#         S.add(u)
-        
-#         # Update the distances of all adjacent vertices that have not yet been visited
-#         for w in G.keys():
-#             if w not in S:
-#                 distance[w] = min(distance.get(w, float('inf')), distance.get(u, float('inf')) + weight[u][w])
-                
-#     return distance
-
-# -----------------
