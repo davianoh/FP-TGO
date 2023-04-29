@@ -1,17 +1,19 @@
 #u = min(G2, key=lambda k: distance.get(k, float('inf')))
+import math
 
+# G = {'A': {'B': 1, 'C': 4}, 'B': {'C': 2}, 'C': {'D': 3}}
+# S = {'E'}
+# V = set(G.keys())
 
-G = {'A': {'B': 1, 'C': 4}, 'B': {'C': 2}, 'C': {'D': 3}}
-S = {'E'}
-V = set(G.keys())
+# distance = {'A': 1, 'B': 2, 'C': 3}
 
-distance = {'A': 1, 'B': 2, 'C': 3}
+# G2 = set(G.keys()) - S
+# u = min(G2, key=lambda k: distance.get(k, float('inf')))
 
-G2 = set(G.keys()) - S
-u = min(G2, key=lambda k: distance.get(k, float('inf')))
+# V.remove('B')
+# print(u)
 
-V.remove('B')
-print(u)
+print(math.sin(math.radians(30)))
 
 # graph = {'A': 4, 'B': 2, 'C': 7}
 
