@@ -28,6 +28,7 @@ G = {'A': {'E': [b, y], 'F': [a, x], 'B': [c, -x]}, 'B': {'A': [c, x], 'E': [b, 
 S = set()
 AVG_Load = {'A':5, 'B':5, 'C':2, 'D':2, 'E':4, 'F':2, 'G':5, 'H':2, 'I':1, 'J':2, 'K':4, 'L':2}
 distance = {}
+M = 0
 # ------------
 
 def Load(v):
@@ -62,8 +63,9 @@ def Calculate_weight(M, a, g, v, f_rl, G):
     return weight
 
 
-def Dijkstra_shortestPath(G, v, M):
+def Dijkstra_shortestPath(G, v):
     global S
+    global M
     global distance
     if v not in S:
         S.add(v)
@@ -80,6 +82,9 @@ def Dijkstra_shortestPath(G, v, M):
     # Among vertices not belonging to S, vertex whose distance [] is minimum
     G2 = set(G.keys()) - S
     u = min(G2, key=lambda k: distance.get(k, float('inf')))
+    
+    for i in G2:
+        print(distance[i])
 
     if u not in S:
         S.add(u)
@@ -93,7 +98,8 @@ def Dijkstra_shortestPath(G, v, M):
 
 def Main(G):
     # Initialize the set M and the starting vertex u
-    M = eks_Magv
+    global M
+    M = M + eks_Magv
     for i in G:
         M = M + Load(i)
     
@@ -111,7 +117,7 @@ def Main(G):
     # Loop until all vertices have been visited
     while V:
         # Find the shortest path from u to all other vertices using Dijkstra's algorithm
-        u = Dijkstra_shortestPath(G, u, M)
+        u = Dijkstra_shortestPath(G, u)
         
         #Sum of the weight starting vertex and arrival vertex
         #E = E + G[u]
